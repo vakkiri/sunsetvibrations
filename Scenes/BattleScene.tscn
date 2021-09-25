@@ -1,0 +1,90 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://Assets/Art/background.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/BattleScene.gd" type="Script" id=2]
+[ext_resource path="res://Assets/Music/scarecrow.wav" type="AudioStream" id=3]
+[ext_resource path="res://Scenes/ArrowBox.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/Art/player.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Music/slime.wav" type="AudioStream" id=8]
+[ext_resource path="res://Scenes/BattleMessage.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Assets/Art/arrow_box2.png" type="Texture" id=10]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 5 )
+region = Rect2( 16, 16, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 5 )
+region = Rect2( 16, 0, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=5]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 3 ) ],
+"loop": false,
+"name": "attack",
+"speed": 5.0
+} ]
+
+[node name="BattleScene" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="scarecrow" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+
+[node name="slime" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 8 )
+
+[node name="PlayerArrowBox" parent="." instance=ExtResource( 4 )]
+position = Vector2( 56, 100 )
+
+[node name="MonsterArrowBox" parent="." instance=ExtResource( 4 )]
+position = Vector2( 96, 100 )
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+margin_left = 56.0
+margin_top = 68.0
+margin_right = 96.0
+margin_bottom = 108.0
+texture = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect3" type="TextureRect" parent="."]
+margin_left = 96.0
+margin_top = 68.0
+margin_right = 136.0
+margin_bottom = 108.0
+texture = ExtResource( 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Player" type="AnimatedSprite" parent="."]
+position = Vector2( 64, 120 )
+frames = SubResource( 5 )
+animation = "attack"
+
+[node name="BattleMessage" parent="." instance=ExtResource( 9 )]
+position = Vector2( 81, 115 )
