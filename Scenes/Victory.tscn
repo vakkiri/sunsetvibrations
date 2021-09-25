@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Assets/Art/VICTORY.png" type="Texture" id=1]
+[ext_resource path="res://Assets/Art/battle-bottom.png" type="Texture" id=2]
+[ext_resource path="res://Assets/Art/battle-top.png" type="Texture" id=3]
+[ext_resource path="res://Scenes/Victory.gd" type="Script" id=4]
+[ext_resource path="res://Assets/Art/battle-middle.png" type="Texture" id=5]
+
+[node name="BattleStart" type="CanvasLayer"]
+script = ExtResource( 4 )
+
+[node name="Top" type="TextureRect" parent="."]
+margin_left = 320.0
+margin_top = 16.0
+margin_right = 480.0
+margin_bottom = 65.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Bottom" type="TextureRect" parent="."]
+margin_left = 320.0
+margin_top = 81.0
+margin_right = 480.0
+margin_bottom = 144.0
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Middle" type="TextureRect" parent="."]
+margin_left = 160.0
+margin_top = 63.0
+margin_right = 320.0
+margin_bottom = 103.0
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Text" type="TextureRect" parent="."]
+margin_left = 288.0
+margin_top = 62.84
+margin_right = 448.0
+margin_bottom = 102.84
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

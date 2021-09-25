@@ -4,6 +4,7 @@ const DELAY_BEATS = 4.0
 const ARROW = preload("res://Scenes/Arrow.tscn")
 const SCARECROW = preload("res://Scenes/ScarecrowMonster.tscn")
 const SLIME = preload("res://Scenes/Monsters/Slime.tscn")
+const TRANSITION = preload("res://Scenes/Victory.tscn")
 var bpm
 var beat_seconds
 var next_beat
@@ -15,7 +16,11 @@ var beat_num = 0
 var crit_ratio = 2.0
 var song = null
 var monster
-	
+var end_delay = 2.0
+var end_timer = end_delay
+var finished = false
+var combo = 0
+
 func set_bpm(new_bpm: float):
 	var seconds_per_beat = 60.0 / new_bpm
 	bpm = new_bpm
@@ -32,7 +37,7 @@ func init(monster_type: String):
 		monster = SCARECROW.instance()
 	elif monster_type == "slime":
 		monster = SLIME.instance()
-	monster.position = Vector2(100, 120)
+	monster.position = Vector2(103, 124)
 	add_child(monster)
 	
 func start():
@@ -67,15 +72,24 @@ func _spawn_block():
 	add_child(arrow)
 
 func kill_monster():
-	get_node("/root/GameState").add_xp(monster.xp)
+	# note to reader: this used to be where you get XP
+	pass
 	
+func miss():
+	combo = 0
+
 func score(crit):
 	$Player.playing = true
 	$Player.frame = 0
 	var damage = get_node("/root/GameState").player_attack
+	var xp = (combo * 2) + 1
 	if crit:
 		damage *= crit_ratio
+		xp *= 2
+	get_node("/root/GameState").add_xp(xp)
 	monster.hit(damage)
+	if combo < 5:
+		combo += 1
 
 func block():
 	$BattleMessage.block()
@@ -100,7 +114,7 @@ func load_song(song_name: String):
 	
 func end_battle():
 	get_parent().end_battle()
-	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if monster.visible:
@@ -121,5 +135,16 @@ func _process(delta):
 				_spawn_arrow()
 		
 		var active_arrow = "NONE"
-	else:
-		end_battle()
+	elif not finished:
+		$Player.playing = true
+		$Player.animation = "victory"
+		if end_timer == end_delay:
+			for child in get_children():
+				if child.is_in_group("arrow"):
+					child.cancel()
+		
+		end_timer -= delta
+		if end_timer <= 0:
+			finished = true
+			var transition = TRANSITION.instance()
+			get_parent().add_child(transition)

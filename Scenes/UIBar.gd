@@ -18,7 +18,7 @@ func _process(delta):
 	if $XPBar.points[1].x < target_width():
 		$XPBar.points[1].x += 32 * delta
 	else:
-		$XPBar.points[1].x = int(target_width())
+		$XPBar.points[1].x = target_width()
 		
 	# Update hp
 	$Health.set_text(str(get_node("/root/GameState").player_health))

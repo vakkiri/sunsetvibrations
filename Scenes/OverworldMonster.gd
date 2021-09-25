@@ -6,6 +6,8 @@ export var vision_radius = 64.0
 export var speed = 24.0
 
 var active = false
+var dead = false
+var remove_timer = 1.0
 
 func player_position():
 	return get_parent().get_node("Player").position
@@ -23,20 +25,24 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	var movement = Vector2(0, 0)
-	if near_player() and active and not get_parent().in_battle:
-		if position.x < player_position().x:
-			movement.x = speed
-		elif position.x > player_position().x:
-			movement.x = -speed
-		if position.y < player_position().y:
-			movement.y = speed
-		elif position.y > player_position().y:
-			movement.y = -speed
-	move_and_slide(movement)
-
+	if not dead:
+		var movement = Vector2(0, 0)
+		if near_player() and active and not get_parent().in_battle:
+			if position.x < player_position().x:
+				movement.x = speed
+			elif position.x > player_position().x:
+				movement.x = -speed
+			if position.y < player_position().y:
+				movement.y = speed
+			elif position.y > player_position().y:
+				movement.y = -speed
+		move_and_slide(movement)
+	else:
+		remove_timer -= delta
+		if remove_timer <= 0:
+			queue_free()
 
 func _on_Area2D_body_entered(body):
 	if body.name == "Player" and type != "no_type":
 		get_parent().start_battle(type)
-		queue_free()
+		dead = true

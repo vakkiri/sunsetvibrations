@@ -15,6 +15,7 @@ var post_delay = 0.1
 
 var hit_range = 0.075
 var crit_range = 0.04
+var spam_range = 0.25
  
 const FRAMES = {
 	"DOWN": 0,
@@ -38,9 +39,15 @@ func _ready():
 	time = 0.0
 	start_y = position.y
 
+func cancel():
+	attack_blocked = true
+	kill()
+	
 func kill():
 	if key in ["A", "B"]:
 		get_parent().monster_attack(attack_blocked)
+	elif not attack_blocked:
+		get_parent().miss()
 	queue_free()
 
 func distance() -> float:
@@ -53,21 +60,27 @@ func active() -> bool:
 	return distance() < hit_range
 
 func _process(delta):
-	if active():
-		if (
-			(Input.is_action_just_pressed("ui_up") and key == "UP") or
-			(Input.is_action_just_pressed("ui_down") and key == "DOWN") or
-			(Input.is_action_just_pressed("ui_left") and key == "LEFT") or
-			(Input.is_action_just_pressed("ui_right") and key == "RIGHT")
-		):
+	if (
+		(Input.is_action_just_pressed("ui_up") and key == "UP") or
+		(Input.is_action_just_pressed("ui_down") and key == "DOWN") or
+		(Input.is_action_just_pressed("ui_left") and key == "LEFT") or
+		(Input.is_action_just_pressed("ui_right") and key == "RIGHT")
+	):
+		if active():
+			attack_blocked = true
 			if crit():
 				get_parent().score(true)
 			else:
 				get_parent().score(false)
-		if (
-			(Input.is_action_just_pressed("a") and key == "A") or
-			(Input.is_action_just_pressed("b") and key == "B")
-		):
+			kill()
+		elif distance() < spam_range:
+			get_parent().miss()
+			kill()
+	if (
+		(Input.is_action_just_pressed("a") and key == "A") or
+		(Input.is_action_just_pressed("b") and key == "B")
+	):
+		if active():
 			attack_blocked = true
 			get_parent().block()
 			kill()
