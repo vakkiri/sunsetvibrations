@@ -56,6 +56,8 @@ func _update_text():
 	var x = 0
 	var y = 0
 	for t in text:
+		if t == ' ' and x == 0:
+			continue
 		var c = CHAR.instance()
 		c.animation = font
 		c.set_char(t)

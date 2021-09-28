@@ -1,53 +1,58 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Assets/Art/background.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/BattleScene.gd" type="Script" id=2]
 [ext_resource path="res://Assets/Music/scarecrow.wav" type="AudioStream" id=3]
 [ext_resource path="res://Scenes/ArrowBox.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/Art/player.png" type="Texture" id=5]
+[ext_resource path="res://Assets/Music/boss.wav" type="AudioStream" id=6]
+[ext_resource path="res://Assets/Art/enemy_health_bg.png" type="Texture" id=7]
 [ext_resource path="res://Assets/Music/slime.wav" type="AudioStream" id=8]
-[ext_resource path="res://Scenes/BattleMessage.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Assets/Art/scarecrow_label.png" type="Texture" id=9]
 [ext_resource path="res://Assets/Art/arrow_box2.png" type="Texture" id=10]
+[ext_resource path="res://Assets/Art/slime_label.png" type="Texture" id=11]
+[ext_resource path="res://Assets/Art/background2.png" type="Texture" id=12]
+[ext_resource path="res://Assets/Art/boss_label.png" type="Texture" id=13]
 
 [sub_resource type="AtlasTexture" id=1]
 atlas = ExtResource( 5 )
-region = Rect2( 0, 0, 16, 16 )
+region = Rect2( 0, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=2]
 atlas = ExtResource( 5 )
-region = Rect2( 16, 0, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=6]
-atlas = ExtResource( 5 )
-region = Rect2( 0, 80, 16, 16 )
-
-[sub_resource type="AtlasTexture" id=7]
-atlas = ExtResource( 5 )
-region = Rect2( 16, 80, 16, 16 )
+region = Rect2( 16, 16, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=3]
 atlas = ExtResource( 5 )
-region = Rect2( 0, 16, 16, 16 )
+region = Rect2( 0, 0, 16, 16 )
 
 [sub_resource type="AtlasTexture" id=4]
 atlas = ExtResource( 5 )
-region = Rect2( 16, 16, 16, 16 )
+region = Rect2( 16, 0, 16, 16 )
 
-[sub_resource type="SpriteFrames" id=5]
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 80, 16, 16 )
+
+[sub_resource type="AtlasTexture" id=6]
+atlas = ExtResource( 5 )
+region = Rect2( 16, 80, 16, 16 )
+
+[sub_resource type="SpriteFrames" id=7]
 animations = [ {
-"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 1 ) ],
+"frames": [ SubResource( 1 ), SubResource( 2 ) ],
+"loop": true,
+"name": "idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 3 ), SubResource( 4 ), SubResource( 3 ) ],
 "loop": false,
 "name": "attack",
 "speed": 5.0
 }, {
-"frames": [ SubResource( 6 ), SubResource( 7 ) ],
+"frames": [ SubResource( 5 ), SubResource( 6 ) ],
 "loop": true,
 "name": "victory",
-"speed": 5.0
-}, {
-"frames": [ SubResource( 3 ), SubResource( 4 ) ],
-"loop": true,
-"name": "idle",
 "speed": 5.0
 } ]
 
@@ -62,18 +67,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="TextureRect5" type="TextureRect" parent="."]
+visible = false
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="scarecrow" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 3 )
+
+[node name="boss" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 6 )
 
 [node name="slime" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 8 )
 
 [node name="PlayerArrowBox" parent="." instance=ExtResource( 4 )]
-visible = false
 position = Vector2( 52, 100 )
 
 [node name="MonsterArrowBox" parent="." instance=ExtResource( 4 )]
-visible = false
 position = Vector2( 100, 100 )
 
 [node name="TextureRect2" type="TextureRect" parent="."]
@@ -100,8 +115,54 @@ __meta__ = {
 
 [node name="Player" type="AnimatedSprite" parent="."]
 position = Vector2( 56, 124 )
-frames = SubResource( 5 )
+frames = SubResource( 7 )
 animation = "attack"
 
-[node name="BattleMessage" parent="." instance=ExtResource( 9 )]
-position = Vector2( 79, 124 )
+[node name="TextureRect4" type="TextureRect" parent="."]
+margin_left = 48.0
+margin_top = 54.0
+margin_right = 111.0
+margin_bottom = 94.0
+texture = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnemyHP" type="Line2D" parent="."]
+position = Vector2( 50, 58 )
+points = PoolVector2Array( 0, 0, 59, 0 )
+width = 4.0
+default_color = Color( 0.411765, 0.2, 0.254902, 1 )
+
+[node name="ScarecrowLabel" type="TextureRect" parent="."]
+visible = false
+margin_left = 48.0
+margin_top = 42.0
+margin_right = 112.0
+margin_bottom = 82.0
+texture = ExtResource( 9 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SlimeLabel" type="TextureRect" parent="."]
+visible = false
+margin_left = 48.0
+margin_top = 42.0
+margin_right = 112.0
+margin_bottom = 82.0
+texture = ExtResource( 11 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BossLabel" type="TextureRect" parent="."]
+visible = false
+margin_left = 48.0
+margin_top = 42.0
+margin_right = 112.0
+margin_bottom = 82.0
+texture = ExtResource( 13 )
+__meta__ = {
+"_edit_use_anchors_": false
+}

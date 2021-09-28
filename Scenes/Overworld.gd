@@ -42,6 +42,8 @@ func end_battle():
 	$Scarecrow.visible = false
 	$JumpingCamera.enable()
 	in_battle = false
+	if monster_type == "boss":
+		get_node("Record").visible = true
 	
 func _on_ScarecrowTrigger_body_entered(body):
 	if not in_battle:

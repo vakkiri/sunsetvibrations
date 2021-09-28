@@ -10,10 +10,9 @@ var attack_blocked = false
 
 const DISTANCE = 32.0
 const DELAY_BEATS = 4.0
-var pre_delay = 0.075
 var post_delay = 0.1
 
-var hit_range = 0.075
+var hit_range = 0.1
 var crit_range = 0.04
 var spam_range = 0.25
  
@@ -46,6 +45,8 @@ func cancel():
 func kill():
 	if key in ["A", "B"]:
 		get_parent().monster_attack(attack_blocked)
+		if not attack_blocked:
+			get_parent().miss_block()
 	elif not attack_blocked:
 		get_parent().miss()
 	queue_free()

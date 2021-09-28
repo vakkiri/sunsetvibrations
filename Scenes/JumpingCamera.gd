@@ -28,13 +28,13 @@ func _process(delta):
 
 func _on_Area2D_body_exited(body):
 	if body.name == "Player":
-		if body.position.y < target_position.y:
+		while body.position.y < target_position.y:
 			target_position.y -= 128
-		elif body.position.y > target_position.y + 128:
+		while body.position.y > target_position.y + 128:
 			target_position.y += 128
-		if body.position.x < target_position.x:
+		while body.position.x < target_position.x:
 			target_position.x -= 160
-		elif body.position.x > target_position.x + 160:
+		while body.position.x > target_position.x + 160:
 			target_position.x += 160
 	elif body.is_in_group("monster"):
 		body.active = false

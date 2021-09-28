@@ -20,11 +20,11 @@ position = Vector2( 14, -1 )
 font = "medium"
 
 [node name="Attack" parent="." instance=ExtResource( 2 )]
-position = Vector2( 105, -1 )
+position = Vector2( 137, -1 )
 font = "medium"
 
 [node name="XPBar" type="Line2D" parent="."]
-position = Vector2( 57, 8 )
+position = Vector2( 72, 8 )
 points = PoolVector2Array( 0, 0, 1, 0 )
 width = 4.0
 default_color = Color( 0.878431, 0.901961, 0.819608, 1 )

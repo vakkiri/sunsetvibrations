@@ -4,7 +4,10 @@ const DELAY_BEATS = 4.0
 const ARROW = preload("res://Scenes/Arrow.tscn")
 const SCARECROW = preload("res://Scenes/ScarecrowMonster.tscn")
 const SLIME = preload("res://Scenes/Monsters/Slime.tscn")
+const BOSS = preload("res://Scenes/Monsters/Boss.tscn")
 const TRANSITION = preload("res://Scenes/Victory.tscn")
+const MESSAGE = preload("res://Scenes/BattleMessage.tscn")
+
 var bpm
 var beat_seconds
 var next_beat
@@ -20,6 +23,8 @@ var end_delay = 2.0
 var end_timer = end_delay
 var finished = false
 var combo = 0
+#var test_enemy = "boss"
+var test_enemy = null
 
 func set_bpm(new_bpm: float):
 	var seconds_per_beat = 60.0 / new_bpm
@@ -28,15 +33,23 @@ func set_bpm(new_bpm: float):
 	
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	if test_enemy:
+		init(test_enemy)
+		start()
 	
 func init(monster_type: String):
 	load_song(monster_type)
 	next_beat = 0.0
 	if monster_type == "scarecrow":
 		monster = SCARECROW.instance()
+		$ScarecrowLabel.visible = true
 	elif monster_type == "slime":
 		monster = SLIME.instance()
+		$SlimeLabel.visible = true
+	elif monster_type == "boss":
+		monster = BOSS.instance()
+		$BossLabel.visible = true
+		$TextureRect5.visible = true
 	monster.position = Vector2(103, 124)
 	add_child(monster)
 	
@@ -77,27 +90,51 @@ func kill_monster():
 	
 func miss():
 	combo = 0
-
+	add_message("miss")
+	
+func miss_block():
+	add_message("miss_block")
+	
 func score(crit):
 	$Player.playing = true
 	$Player.frame = 0
 	var damage = get_node("/root/GameState").player_attack
-	var xp = (combo * 2) + 1
+	var xp = (min(combo, 5) * 2) + 1
+	var points = (combo + 1)
+	
 	if crit:
+		add_message("crit")
 		damage *= crit_ratio
-		xp *= 2
+		points *= 2
+	else:
+		add_message("hit")
 	get_node("/root/GameState").add_xp(xp)
+	get_node("/root/GameState").score += points
 	monster.hit(damage)
-	if combo < 5:
-		combo += 1
+	combo += 1
 
 func block():
-	$BattleMessage.block()
+	add_message("block")
+
+func add_message(type):
+	var message = MESSAGE.instance()
+	if type == "block":
+		message.position = Vector2(124, 93)
+		type = "hit"  # hit and block use the same message
+	elif type == "miss_block":
+		message.position = Vector2(124, 93)
+		type = "miss"  # hit and block use the same message
+	else:
+		message.position = Vector2(34, 93)
+	
+	message.set_message(type)
+	add_child(message)
+	
 	
 func monster_attack(block=false):
 	monster.attack()
 	if not block:
-		get_node("/root/GameState").player_health -= monster.attack
+		get_node("/root/GameState").hit_player(monster.attack)
 	
 func load_song(song_name: String):
 	var file = File.new()
@@ -110,13 +147,13 @@ func load_song(song_name: String):
 	
 	set_bpm(song_info["bpm"])
 	song = get_node(song_name)
-	print(song_info)
 	
 func end_battle():
 	get_parent().end_battle()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	$EnemyHP.points[1].x = ceil(60 * (monster.health / monster.max_health))
 	if monster.visible:
 		if song.get_playback_position() >= next_beat:
 			next_beat += beat_seconds

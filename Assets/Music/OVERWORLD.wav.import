@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/OVERWORLD.wav-45372b29bfdeffd7aebbbf98e98d43fb.sample"
+
+[deps]
+
+source_file="res://Assets/Music/OVERWORLD.wav"
+dest_files=[ "res://.import/OVERWORLD.wav-45372b29bfdeffd7aebbbf98e98d43fb.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=true
+compress/mode=0

@@ -1,11 +1,11 @@
 extends Node2D
 
 
-const MAX_WIDTH = 32.0
+const MAX_WIDTH = 32
 
 func target_width():
 	var xp = get_node("/root/GameState").player_xp / get_node("/root/GameState").xp_to_next_level
-	return MAX_WIDTH * xp
+	return floor(MAX_WIDTH * xp)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

@@ -28,13 +28,13 @@ func _process(delta):
 	if not dead:
 		var movement = Vector2(0, 0)
 		if near_player() and active and not get_parent().in_battle:
-			if position.x < player_position().x:
+			if player_position().x - position.x > 8:
 				movement.x = speed
-			elif position.x > player_position().x:
+			elif player_position().x - position.x < -8:
 				movement.x = -speed
-			if position.y < player_position().y:
+			if player_position().y - position.y > 8:
 				movement.y = speed
-			elif position.y > player_position().y:
+			elif player_position().y - position.y < -8:
 				movement.y = -speed
 		move_and_slide(movement)
 	else:

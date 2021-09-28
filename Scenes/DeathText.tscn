@@ -1,0 +1,95 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Scenes/DeathText.gd" type="Script" id=1]
+[ext_resource path="res://Assets/Art/text-bg.png" type="Texture" id=2]
+[ext_resource path="res://Scenes/TextBlock.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Assets/Music/INTRO.wav" type="AudioStream" id=4]
+[ext_resource path="res://Assets/Art/angel.png" type="Texture" id=5]
+
+[sub_resource type="AtlasTexture" id=1]
+atlas = ExtResource( 5 )
+region = Rect2( 0, 0, 27, 24 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 5 )
+region = Rect2( 27, 0, 27, 24 )
+
+[sub_resource type="AtlasTexture" id=3]
+atlas = ExtResource( 5 )
+region = Rect2( 54, 0, 27, 24 )
+
+[sub_resource type="AtlasTexture" id=4]
+atlas = ExtResource( 5 )
+region = Rect2( 81, 0, 27, 24 )
+
+[sub_resource type="AtlasTexture" id=5]
+atlas = ExtResource( 5 )
+region = Rect2( 108, 0, 27, 24 )
+
+[sub_resource type="SpriteFrames" id=6]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[node name="DeathText" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 80, 16 )
+frames = SubResource( 6 )
+playing = true
+
+[node name="TextBlock" parent="." instance=ExtResource( 3 )]
+position = Vector2( 8, 32 )
+text = "Traveller!"
+char_width = 5
+line_width = 136
+upper_padding = 4
+lower_padding = 3
+space_size = 5
+font = "medium"
+
+[node name="TextBlock2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 8, 48 )
+text = "We see you have been hurt. Please do not"
+char_width = 5
+upper_padding = 4
+lower_padding = 3
+space_size = 1
+font = "medium"
+
+[node name="TextBlock3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 8, 70 )
+text = "give up!"
+char_width = 5
+line_width = 136
+upper_padding = 4
+lower_padding = 3
+space_size = 1
+font = "medium"
+
+[node name="TextBlock4" parent="." instance=ExtResource( 3 )]
+position = Vector2( 8, 88 )
+text = "Try again, with your spirit restored."
+char_width = 5
+line_width = 110
+upper_padding = 4
+lower_padding = 3
+space_size = 1
+font = "medium"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+volume_db = -4.039
+autoplay = true
